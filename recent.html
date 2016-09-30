@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>New to the National Archives Catalog</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		
+      <script type="text/javascript" language="javascript">
+         $(document).ready(function() {
+            $("#input").ready(function(event){
+               
+            var o = 0;
+            var e = 198;
+               $.getJSON('https://catalog.archives.gov/api/v1/?type=description&objects.object.@objectSortNum=1&rows=200&sort=naIdSort%20desc&description.item.generalRecordsTypeArray.generalRecordsType.naId=10035674&objects.object.file.@mime=jpeg&offset=' + o, function(t) {
+					var i = 0;
+					var images = '';
+					for (i = 0; i < e; i++) { 
+						try {
+							images = images + '<a href="https://catalog.archives.gov/id/' + t.opaResponse.results.result[i].naId + '"><img src="' + t.opaResponse.results.result[i].objects.object.thumbnail['@url'] + '" height="100" width="100"/></a>';
+						}
+						catch(err) {
+							images = images + '<a href="https://catalog.archives.gov/id/' + t.opaResponse.results.result[i].naId + '"><img src="' + t.opaResponse.results.result[i].objects.object[0].thumbnail['@url'] + '" height="100" width="100"/></a>';
+						}
+					}
+                  	$('#images').html(images);
+
+               });
+$('#output').html('<ul>Loading images...</ul>');
+            });
+         });
+      </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>New to the National Archives Catalog</h1>
+        <p></p>
+        
+      <p>This tool is used to display recent additions to the <a href='https://catalog.archives.gov'>National Archives catalog</a>. It is configured to display the first page of recently added item descriptions which have photographic objects attached.</p>
+        <br/>
+        <p><small>This project is maintained by <a href="https://github.com/Dominic-MP">Dominic-MP</a>. Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </header>
+      <section>
+		<p><span id="images"><span id ="output"/></span></p>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    </section>
+  </body>
+</html>

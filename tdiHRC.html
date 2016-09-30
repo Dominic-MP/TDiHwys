@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>This Day in Hillary Clinton</title>
+    <title>This Day in Highways</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
@@ -34,7 +34,7 @@
 			}
 			
 			$('#date').html('<h1>' + monthnames[month - 1] + ' ' + day + '</h1>');
-			$.getJSON('https://catalog.archives.gov/api/v1?description.item.productionDateArray.proposableQualifiableDate.day=' + day + '&description.item.productionDateArray.proposableQualifiableDate.month=' + month + '&q=%22hillary%20clinton%22or%20%22hillary%20rodham%20clinton%22&type=description&objects.@version=OPA', function(t) {
+			$.getJSON('https://catalog.archives.gov/api/v1?description.item.productionDateArray.proposableQualifiableDate.day=' + day + '&description.item.productionDateArray.proposableQualifiableDate.month=' + month + '&q=%22highways%22&type=description&objects.@version=OPA', function(t) {
 					var i = 0;
 					var images = '';
 					var e = t.opaResponse.results.total
@@ -51,8 +51,8 @@ $('#output').html('<ul>Loading data...</ul>');
   <body>
     <div class="wrapper">
       <header>
-        <h1>#TDiHRC</h1>
-        <p>This page displays Hillary Clinton-related records from the National Archives' catalog from this day in history.</p>
+        <h1>#TDiHwys</h1>
+        <p>This page displays highway-related records from the National Archives' catalog from this day in history.</p>
         
         <br/>
         <p><small>This project is maintained by <a href="https://github.com/Dominic-MP">Dominic-MP</a>. Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>

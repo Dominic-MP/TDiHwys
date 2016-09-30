@@ -15,7 +15,13 @@
       <script type="text/javascript" language="javascript">
          $(document).ready(function() {
             $("#input").ready(function(event){
-               
+            
+			var sec = 0;
+			function pad ( val ) { return val > 9 ? val : "0" + val; }
+			setInterval( function(){
+				$("#loading").html('<ul>Loading images... (' + pad(parseInt(sec/60,10)) + ':' + pad(++sec%60) + ')</ul>');
+			}, 1000);
+            
             var o = 0;
             var e = 198;
                $.getJSON('https://catalog.archives.gov/api/v1/?type=description&objects.object.@objectSortNum=1&rows=200&sort=naIdSort%20desc&description.item.generalRecordsTypeArray.generalRecordsType.naId=10035674&objects.object.file.@mime=jpeg&offset=' + o, function(t) {
@@ -32,7 +38,6 @@
                   	$('#images').html(images);
 
                });
-$('#output').html('<ul>Loading images...</ul>');
             });
          });
       </script>
@@ -48,7 +53,7 @@ $('#output').html('<ul>Loading images...</ul>');
         <p><small>This project is maintained by <a href="https://github.com/Dominic-MP">Dominic-MP</a>. Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </header>
       <section>
-		<p><span id="images"><span id ="output"/></span></p>
+		<p><span id="images"><span id="loading"/></span></p>
     </div>
     <script src="javascripts/scale.fix.js"></script>
     </section>

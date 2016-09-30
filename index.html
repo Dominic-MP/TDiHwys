@@ -16,6 +16,13 @@
          
          $(document).ready(function () {
          	
+         	var sec = 0;
+			function pad ( val ) { return val > 9 ? val : "0" + val; }
+			setInterval( function(){
+				$("#loading").html('<ul>Loading images... (' + pad(parseInt(sec/60,10)) + ':' + pad(++sec%60) + ')</ul>');
+			}, 1000);
+
+         	
          	function date() {
          	
 			var d = new Date();
@@ -44,7 +51,6 @@
 					
                   	$('#images').html(images);
                });
-$('#output').html('<ul>Loading data...</ul>');
          });
       </script>
   </head>
@@ -62,7 +68,7 @@ $('#output').html('<ul>Loading data...</ul>');
       <tr>
       <td><!-- <a href="#" id="decrement"><img name="left" src='200px-Circle_arrow_left_font_awesome.svg.png' width="50"/></a> --></td><td><center><span id="date"/></center></td><td><!-- <a href="#" id="increment"><img name="right" src='50px-Circle_arrow_right_font_awesome.svg.png' width="50" align="right"/></a> --></td>
       </tr></table>
-		<p><center><span id="images"><span id ="output"/></span></center></p>
+		<p><span id="images"><span id="loading"/></span></p>
     </div>
     <script src="javascripts/scale.fix.js"></script>
     </section>

@@ -41,7 +41,7 @@
 			}
 			
 			$('#date').html('<h1>' + monthnames[month - 1] + ' ' + day + '</h1>');
-			$.getJSON('https://catalog.archives.gov/api/v1?description.item.productionDateArray.proposableQualifiableDate.day=' + day + '&description.item.productionDateArray.proposableQualifiableDate.month=' + month + '&q=%22highways%22&type=description&objects.@version=OPA', function(t) {
+			$.getJSON('https://catalog.archives.gov/api/v1?description.item.productionDateArray.proposableQualifiableDate.day=' + day + '&description.item.productionDateArray.proposableQualifiableDate.month=' + month + '&q=%22highways%22&type=description&description.item.generalRecordsTypeArray.generalRecordsType.naId=10035674&objects.object.file.@mime=image', function(t) {
 					var i = 0;
 					var images = '';
 					var e = t.opaResponse.results.total

@@ -30,7 +30,7 @@
 			return [d.getDate(), d.getMonth(), monthnames];
 			}
 			
- 			var date = date();
+// 			var date = date();
 // 			var day = date[0]
 // 			var month = date[1] + 1
 // 			var monthnames = date[2]
@@ -44,14 +44,17 @@
 			}
 			
 			$('#date').html('<h1>' + 'October' + ' ' + day + '</h1>');
-			$.getJSON('https://catalog.archives.gov/api/v1?description.item.productionDateArray.proposableQualifiableDate.day=' + day + '&description.item.productionDateArray.proposableQualifiableDate.month=' + month + '&q=%22highways%22&type=description&description.item.generalRecordsTypeArray.generalRecordsType.naId=10035674&objects.object.file.@mime=image', function(t) {
+			$.getJSON('https://catalog.archives.gov/api/v1?description.item.productionDateArray.proposableQualifiableDate.day=' + day + '&description.item.productionDateArray.proposableQualifiableDate.month=' + month + '&q=%22highways%22&type=description&description.item.generalRecordsTypeArray.generalRecordsType.naId=10035674&objects.object.file.@mime=image&rows=200', function(t) {
 					var i = 0;
 					var images = '';
 					var e = t.opaResponse.results.total
 					for (i = 0; i < e; i++) { 
-						images = images + '<img src="' + t.opaResponse.results.result[i].objects.object.file['@url'] + '" width="500"/><p>"<em><a href="https://catalog.archives.gov/id/' + t.opaResponse.results.result[i].naId + '">' + t.opaResponse.results.result[i].description.item.title + '</a></em>" (<strong>' + t.opaResponse.results.result[i].description.item.productionDateArray.proposableQualifiableDate.year + '</strong>)</p>';
+						try {
+							images = images + '<img src="' + t.opaResponse.results.result[i].objects.object.file['@url'] + '" width="500"/><p>"<em><a href="https://catalog.archives.gov/id/' + t.opaResponse.results.result[i].naId + '">' + t.opaResponse.results.result[i].description.item.title + '</a></em>" (<strong>' + t.opaResponse.results.result[i].description.item.productionDateArray.proposableQualifiableDate.year + '</strong>)</p>';
+						} catch(err) {
+							images = images + '<img src="' + t.opaResponse.results.result[i].objects.object[0].file['@url'] + '" width="500"/><p>"<em><a href="https://catalog.archives.gov/id/' + t.opaResponse.results.result[i].naId + '">' + t.opaResponse.results.result[i].description.item.title + '</a></em>" (<strong>' + t.opaResponse.results.result[i].description.item.productionDateArray.proposableQualifiableDate.year + '</strong>)</p>';
+						}
 					}
-					
                   	$('#images').html(images);
                });
          });

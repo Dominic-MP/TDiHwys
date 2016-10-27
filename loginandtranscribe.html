@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Innovation Hub — Recently Scanned Documents</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	
+  </head>
+  <body>
+      <script type="text/javascript" language="javascript">
+         $(document).ready(function() {
+         	$('#loading').html('<p>Searching for an image to transcribe...</p>');
+         	$("#loading").hide();
+         	$("#tagappear").hide();
+         	$("#skip").hide();
+         	$("#next").hide();
+            $("#input").click(function(event){
+         	$("#loading").show();
+            var username = $('#username').val();
+            var password = $('#password').val();
+			offset = 0;
+			n = 1;
+            
+			function displayimage() {
+			
+			$.post('https://catalog.archives.gov/api/v1/login', {user: username, password: password}, function(t) {
+					credential = t.opaResponse.credentials;
+					$.getJSON('https://catalog.archives.gov/OpaAPI/iapi/v1?SearchType=advanced&action=contentDetail&f.tagsKeywordsAdv=hng-ts1&facet=true&facet.fields=oldScope,level,materialsType,fileFormat,locationIds,dateRangeFacet&highlight=true&offset=' + offset + '&q=*:*&tabType=all', function(o) {
+					attempt(n);
+					function attempt() {
+					mime = o.opaResponse.content.objects.objects.object[n].file['@mime'];
+					objectid = o.opaResponse.content.objects.objects.object[n]['@id'];
+					naid = o.opaResponse['@naId'];
+					title = o.opaResponse['@title'];
+					path = o.opaResponse.content.objects.objects.object[n].file['@path'];
+					url = 'https://catalog.archives.gov/OpaAPI/media/' + naid + '/' + path;
+					page = o.opaResponse.content.objects.objects.object[n]['@objectSortNum'];
+					try {
+					transcription = o.opaResponse.content.objects.objects.object[n].publicContributions.transcription.text;
+					n = n + 1;
+					$("#skip").show();
+					attempt(n);
+					}
+					catch(err) {
+					transcription = ''
+					$('#loggedin').html('<p><font color="green" size="5">&#x25CF;</font> Success: You are now logged in.');
+					$('#transcribeimage').html('"' + title + '" (NAID <a href="https://catalog.archives.gov/id/' + naid + '">' + naid + '</a>, page <a href="https://catalog.archives.gov/id/' + naid + '/' + page + '/public?contributionType=transcription">' + page + '</a>)</p><img src="' + url + '" width="1000" />');
+					$('#tagtext').val(transcription);
+					$("#tagappear").show();
+					
+         			$("#skip").show();
+         			$("#next").show();
+					$("#hide").hide();
+					
+					
+					 $("#tag").click(function(event){
+					 var tagtext = $('#tagtext').val();
+					 $.ajax({
+    						beforeSend: function(request) {
+						        request.setRequestHeader('Authorization', credential);
+    							},
+    						dataType: "json",
+					 url: 'https://catalog.archives.gov/api/v1/id/' + naid + '/objects/' + objectid + '/transcriptions?text=' + tagtext,
+					 method: 'PUT'
+					 });
+					 $('#test').html('Success!<br/>' + tagtext + '<br/>' + credential);
+					 });
+					 }
+					 }
+               		});
+						}, 'json')
+						.fail(function() {
+						$('#login').html('<p>Invalid password and/or username. Please retry.</p>');
+						});
+					}
+				displayimage(username, password, offset, n);
+				$("#skip").click(function(event){
+				offset = offset + 1;
+				displayimage(username, password, offset, n);
+				});
+				$("#next").click(function(event){
+				n = n + 1;
+				displayimage(n);
+				});
+						
+         });
+         });
+      </script>
+    <div class="wrapper">
+      <header>
+        
+        
+        <span id="loggedin"><p>Please log in to begin.</p>
+        <p><input type="text" style="width:134px" id="username" placeholder="username" /><input style="width:134px" type="password" id="password" placeholder="password" onKeydown="Javascript: if (event.keyCode==13) event();" /><br/><input style="width:280px" type="button" id="input" value="Load" /></p></span>
+        
+        <span id="tagappear"><span id="test"><textarea rows="40" style="width:300px" id="tagtext" ></textarea><br/><input style="width:100px align:right" type="button" id="tag" value="Submit" /></span></span>
+<!-- 
+        <p></p>
+        
+      <p>This tool is used to display the newest images that were scanned in the <a href="http://www.archives.gov/innovation-hub">Innovation Hub</a> and are now in the <a href='https://catalog.archives.gov'>National Archives catalog</a>.</p>
+      
+      <p>It is configured to use the National Archives catalog API to display the first page's thumbnail from each of the most recent 192 descriptions with digital images that have been tagged as scanned by a "citizen contributor".</p>
+        <br/>
+        <p><small>This project is maintained by <a href="https://github.com/Dominic-MP">Dominic-MP</a>. Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+ -->
+      </header>
+      <section>
+      <h1>Can you transcribe this?</h1>
+      
+      <input align="right" type="button" id="next" value="Next page" /><input type="button" id="skip" value="New document" />
+		<p><span id="transcribeimage"><span id="loading"></span></span></p>
+		
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    </section>
+  </body>
+</html>

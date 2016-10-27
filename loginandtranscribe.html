@@ -17,12 +17,17 @@
       <script type="text/javascript" language="javascript">
          $(document).ready(function() {
          	$('#loading').html('<p>Searching for an image to transcribe...</p>');
-         	$("#loading").hide();
+         	$('#loading').hide();
          	$("#tagappear").hide();
          	$("#skip").hide();
          	$("#next").hide();
             $("#input").click(function(event){
          	$("#loading").show();
+         	$('#username').hide();
+         	$('#password').hide();
+         	$('#loginmessage').hide();
+         	$('#input').hide();
+         	$('#loggingin').html('<p><font color="#FFC200" size="5">&#x25CF;</font> Logging in to the system...</p>');
             var username = $('#username').val();
             var password = $('#password').val();
 			offset = 0;
@@ -97,7 +102,7 @@
       <header>
         
         
-        <span id="loggedin"><p>Please log in to begin.</p>
+        <span id="loggedin"><span id="loggingin"></span><p id="loginmessage">Please log in to begin.</p>
         <p><input type="text" style="width:134px" id="username" placeholder="username" /><input style="width:134px" type="password" id="password" placeholder="password" onKeydown="Javascript: if (event.keyCode==13) event();" /><br/><input style="width:280px" type="button" id="input" value="Load" /></p></span>
         
         <span id="tagappear"><span id="test"><textarea rows="40" style="width:300px" id="tagtext" ></textarea><br/><input style="width:100px align:right" type="button" id="tag" value="Submit" /></span></span>
